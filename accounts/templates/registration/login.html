@@ -1,0 +1,67 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+    
+    <h2 style="text-align: center; color: #333; margin-bottom: 10px;">登录账户</h2>
+    
+    {% if form.errors %}
+    <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+        <p style="margin: 0 0 10px 0; font-weight: bold;">登录失败</p>
+        <p style="margin: 0 0 10px 0;">用户名和密码不匹配，请重试。</p>
+        <p style="margin: 0;">或者 <a href="{% url 'accounts:register' %}" style="color: #007bff; text-decoration: none;">注册新账户</a></p>
+    </div>
+    {% endif %}
+    
+    <form action="{% url 'accounts:login' %}" method="post" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; color: #555; font-weight: 500;">用户名</label>
+            {{ form.username }}
+        </div>
+        
+        <div style="margin-bottom: 25px;">
+            <label style="display: block; margin-bottom: 8px; color: #555; font-weight: 500;">密码</label>
+            {{ form.password }}
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s;">
+            登录
+        </button>
+    </form>
+    
+    <div style="text-align: center; padding-top: 20px; border-top: 1px solid #eee;">
+        <p style="color: #666; margin-bottom: 15px;">还没有账户？</p>
+        <a href="{% url 'accounts:register' %}" style="display: block; padding: 10px; background: #f8f9fa; color: #007bff; border: 1px solid #007bff; border-radius: 5px; text-decoration: none; text-align: center; transition: all 0.3s;">
+            注册新账户
+        </a>
+    </div>
+</div>
+
+<style>
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border 0.3s;
+    }
+    
+    input:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+    
+    button:hover {
+        background: #0056b3 !important;
+    }
+    
+    a:hover {
+        background: #007bff !important;
+        color: white !important;
+    }
+</style>
+{% endblock content %}
