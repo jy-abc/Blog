@@ -1,0 +1,31 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+    <div class="card-header">
+        <h2 style="color: #f5576c;">删除博客</h2>
+        <p style="color: #666;">请谨慎操作，此操作不可撤销</p>
+    </div>
+    
+    <div class="card-body">
+        <div class="alert alert-warning" style="border-left: 4px solid #f5576c;"> 
+            <div>
+                <h4 style="margin: 0 0 10px 0; color: #856404;">危险操作警告</h4>
+                <p style="margin: 0;">此操作不可撤销！删除后所有数据将永久丢失。</p>
+            </div>    
+            
+            <div style="background: white; border-radius: 5px; padding: 15px; margin: 15px 0;">
+                <p style="margin-bottom: 10px;">您将要删除博客：</p>
+                <p style="font-size:20px;color: #000000; margin: 10px 0; text-align: center; font-weight: bold;">"{{ blog.name }}"</p>
+                <p style="font-size:16px; color:#667eea;text-align: center;">共{{ blog.post_set.count }}篇博文</p>
+            </div>
+        </div>
+        
+        <form method="post" onsubmit="return confirm('最后确认：确定要永久删除这个博客吗？')">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn btn-danger" style="flex: 1;">确认删除</button>
+                <a href="{% url 'blogs:blog' blog.id %}" class="btn btn-secondary" style="flex: 1; text-align: center;">取消并返回</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

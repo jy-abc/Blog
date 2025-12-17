@@ -1,0 +1,42 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+    <div class="card-header">
+        <h2 style="color: #f5576c;">删除博文</h2>
+        <p style="color: #666;">
+            返回 <a href="{% url 'blogs:blog' blog.id %}" style="color: #667eea;text-decoration: none;">{{ blog.name }}</a>
+        </p>
+    </div>
+    
+    <div class="card-body">
+        <div class="alert alert-warning" style="border-left: 4px solid #f5576c;">
+             <div>
+                <h4 style="margin: 0 0 10px 0; color: #856404;">危险操作警告</h4>
+                <p style="margin: 0;">此操作不可撤销！删除后所有数据将永久丢失。</p>
+            </div>  
+            
+            <div class="card" style="margin: 15px 0;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <small style="color: #666;">发布于：{{ post.date_added|date:"Y年m月d日 H:i" }}</small>
+                    <span style="font-size: 12px; background: #e9ecef; padding: 2px 8px; border-radius: 10px;">
+                        字数: {{ post.text|length }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div style="max-height: 200px; overflow-y: auto; padding: 10px; background: white; border-radius: 3px;">
+                        <p style="white-space: pre-wrap; color: #333; line-height: 1.6;">{{ post.text|truncatewords:100 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form method="post" onsubmit="return confirm('最后确认：确定要永久删除这篇博文吗？')">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn btn-danger" style="flex: 1;">确认删除</button>
+                <a href="{% url 'blogs:edit_post' post.id %}" class="btn" style="flex: 1; text-align: center;">返回编辑</a>
+                <a href="{% url 'blogs:blog' blog.id %}" class="btn btn-secondary" style="flex: 1; text-align: center;">取消</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

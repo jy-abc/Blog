@@ -1,0 +1,35 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+    <div class="card-header" style="display: flex; align-items: center; gap: 10px;">
+        <a href="{% url 'blogs:blog' blog.id %}" class="btn" style="text-decoration: none;">← 返回</a>
+        <h2 style="color: #667eea; margin: 0;">写新博文</h2>
+    </div>
+    
+    <div class="card-body">
+        <p style="background: #f0f7ff; padding: 15px; border-radius: 5px; border-left: 4px solid #667eea;">
+            在博客 <strong>"{{ blog.name }}"</strong> 中发表新文章
+        </p>
+        
+        <form action="{% url 'blogs:new_post' blog.id %}" method="post">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">
+                    博文内容：
+                </label>
+                {{ form.text }}
+                {% if form.text.errors %}
+                    <div style="color: #f5576c; font-size: 14px; margin-top: 5px;">
+                        {{ form.text.errors }}
+                    </div>
+                {% endif %}
+                
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 25px;">
+                <button type="submit" class="btn" style="flex: 2;">发布博文</button>
+                <a href="{% url 'blogs:blog' blog.id %}" class="btn btn-secondary" style="flex: 1; text-align: center;" onclick="return confirm('是否取消博文发布？')">取消</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

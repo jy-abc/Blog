@@ -1,0 +1,57 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+    <div class="card-header">
+        <h2 style="color: #667eea;">所有博客</h2>
+    </div>
+    
+    <div class="card-body">
+        {% if user.is_authenticated %}
+            <div style="text-align: right; margin-bottom: 20px;">
+                <a href="{% url 'blogs:new_blog' %}" class="btn">创建新博客</a>
+            </div>
+        {% endif %}
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+            {% for blog in blogs %}
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <h3 style="margin-bottom: 10px;">
+                            <a href="{% url 'blogs:blog' blog.id %}" style="color: #667eea; text-decoration: none;">{{ blog.name }}</a>
+                        </h3>
+                        <span style="font-size: 12px; background: #e9ecef; padding: 2px 8px; border-radius: 10px;">
+                            {{ blog.owner.username }}
+                        </span>
+                    </div>
+                    
+                    <p style="color: #666; font-size: 14px; margin: 10px 0;">
+                        创建于 {{ blog.date_added|date:"Y-m-d H:i" }}
+                    </p>
+                    
+                    <p style="color: #666; font-size: 14px;">
+                        博文数量: <strong>{{ blog.post_set.count }}</strong> 篇
+                    </p>
+                    
+                    {% if user == blog.owner %}
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <a href="{% url 'blogs:delete_blog' blog.id %}" 
+                           class="btn btn-danger" 
+                           onclick="return confirm('确认删除该博客吗？')"
+                           style="font-size: 12px; padding: 8px 15px;">
+                            删除博客
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="card" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <h3 style="color: #888;">暂无博客</h3>
+                    <p style="color: #aaa; margin-top: 10px;">还没有人创建博客</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'blogs:new_blog' %}" class="btn" style="margin-top: 15px;">创建我的博客</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

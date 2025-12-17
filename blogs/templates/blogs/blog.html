@@ -1,0 +1,58 @@
+{% extends 'blogs/base.html' %}
+
+{% block content %}
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h2 style="color: #667eea;">{{ blog.name }}</h2>
+            <p style="color: #666; margin-top: 5px;">
+                博主: {{ blog.owner.username }} | 
+                创建时间: {{ blog.date_added|date:"Y-m-d H:i" }} |
+                博文数: {{ posts|length }}
+            </p>
+        </div>
+        
+        {% if user == blog.owner %}
+        <div>
+            <a href="{% url 'blogs:new_post' blog.id %}" class="btn">写新博文</a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card-body">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card" style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 12px; background: #667eea; color: white; padding: 3px 8px; border-radius: 3px;">
+                                #{{ forloop.counter }}
+                            </span>
+                            <small style="color: #888;">{{ post.date_added|date:'Y年m月d日 H:i' }}</small>
+                        </div>
+                        
+                        {% if user == blog.owner %}
+                        <div style="display: flex; gap: 10px;">
+                            <a href="{% url 'blogs:edit_post' post.id %}" class="btn" style="font-size: 12px; padding: 6px 12px;">编辑</a>
+                            <a href="{% url 'blogs:delete_post' post.id %}" 
+                               class="btn btn-danger" 
+                               style="font-size: 12px; padding: 6px 12px;">删除</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div style="padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                        <p style="white-space: pre-wrap; line-height: 1.8; color: #333;">{{ post.text|linebreaks }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="card" style="text-align: center; padding: 40px;">
+                <h3 style="color: #888;">暂无博文</h3>
+                <p style="color: #aaa; margin-top: 10px;">博客内还没有任何博文</p>
+                {% if user == blog.owner %}
+                    <a href="{% url 'blogs:new_post' blog.id %}" class="btn" style="margin-top: 15px;">写第一篇博文</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

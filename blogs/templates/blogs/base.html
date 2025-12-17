@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-info {
+            font-weight: 600;
+            color: #ffd700;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .btn-outline-danger {
+            background: transparent;
+            border: 2px solid #f5576c;
+            color: #f5576c;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            border: 1px solid #e1e5eb;
+            border-radius: 8px;
+            margin: 15px 0;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e1e5eb;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .card-body {
+            padding: 15px;
+        }
+        
+        .card-footer {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-top: 1px solid #e1e5eb;
+            border-radius: 0 0 8px 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 表单样式 */
+        form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #e1e5eb;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* 列表样式 */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+        
+        li:hover {
+            background: #f8f9fa;
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        /* 警告框 */
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-brand">
+            <a href="{% url 'blogs:index' %}" style="font-size: 24px; font-weight: bold; color: white; text-decoration: none;">博客系统</a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'blogs:index' %}">首页</a>
+            <a href="{% url 'blogs:blogs' %}">所有博客</a>
+            {% if user.is_authenticated %}
+                <span class="user-info">👤 {{ user.username }}</span>
+            {% else %}
+                <a href="{% url 'accounts:register' %}">注册</a>
+                <a href="{% url 'accounts:login' %}">登录</a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="container">
+        {% block content %}{% endblock content %}
+    </div>
+    
+    {% if user.is_authenticated %}
+    <div class="container" style="text-align: center; padding: 15px;">
+        <form action="{% url 'accounts:logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background: #6c757d;">退出登录</button>
+        </form>
+    </div>
+    {% endif %}
+    
+</body>
+</html>
